@@ -16,8 +16,8 @@ close all
 
 fileOfInterest = {...
 '211008_B_bmcBRFS001_FD.mat';
-'211009_B_bmcBRFS002_FD.mat';
-'211027_B_bmcBRFS002_FD.mat';
+'211009_B_bmcBRFS002_FD.mat'; %only brfs 002 available.
+'211027_B_bmcBRFS002_FD.mat'; %use brfs 002!!
 '211103_B_bmcBRFS001_FD.mat'};
 
 

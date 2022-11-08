@@ -4,7 +4,7 @@ function plotCSDandPSDfromNEV(holderName,holderUseChans,holderInterpChans)
 BRdatafile = holderName;
 
 extension     = 'ns2'; % THIS CODE DOES NOT DOWNSAMPLE OR FILTER DATA
-el            = 'eD';
+el            = 'eA';
 sortdirection = 'ascending'; %  descending (NN) or ascending (Uprobe) % new note -- BMC 211007_B descenting and ascending is a moot point because of the new channel map
 pre           = 50;
 post          = 250;
