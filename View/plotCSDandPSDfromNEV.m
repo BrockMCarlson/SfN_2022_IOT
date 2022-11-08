@@ -112,10 +112,6 @@ nsx.E = length( tn );
 nsx.neural = sum( tn );
 nsx.anlg = sum( ~tn );
 
-if exist('electrode')
-error('what goes here?')   
-end
-
 neuralChan = find( tn );
 bncChan = find( ~tn );
 
@@ -136,7 +132,12 @@ nsx.nyq = nsx.fs / 2;
 nsx.deci = nsx.fs / 1000;
 
 electD = openNSx( jnmfile, 'c:1', 'read' );
-tData = double( electD.Data );
+if iscell(electD.Data)
+    tData = double( electD.Data{1} );
+    warning('two cells of data in electD.Data. Taking the first cell. Might not be correct, but should be ok for PSD calc - which only needs approx 1min of data or less')
+else
+    tData = double( electD.Data );
+end
 
 samples = length( tData );
 
@@ -144,8 +145,12 @@ bnc = zeros( nsx.anlg, ceil( samples / nsx.deci )  );
 lfp = zeros( nsx.neural, ceil( samples / nsx.deci ) );
     
 electD = openNSx( jnmfile );
-
-tData = ( double( electD.Data ) ).' ;
+if iscell(electD.Data)
+    tData = ( double( electD.Data{1} ) ).' ;
+    warning('two cells of data in electD.Data. Taking the first cell. Might not be correct, but should be ok for PSD calc - which only needs approx 1min of data or less')
+else
+    tData = ( double( electD.Data ) ).' ;
+end
 t2Data = tData( :, bncChan );
 tData = tData( :, neuralChan );
 

@@ -2,7 +2,7 @@ function MUA = f_calcMUA2D(DAT,Fs,method)
 
 
 if nargin < 3
-    method = 'default';
+    method = 'Dec21Fix';
 end
 
 nyq = Fs/2;
@@ -10,7 +10,7 @@ nyq = Fs/2;
 
 switch method
     
-    case 'Dec21Fix'
+    case 'Dec21Fix'% BMC 12/21/2021
         lpc = 5000;  %low pass cutoff
         lWn = lpc/nyq;
         [bwb,bwa] = butter(4,lWn,'low');
@@ -28,7 +28,7 @@ switch method
         [bwb,bwa] = butter(4,lWn2,'low');
         lpMUA = abs(filtfilt(bwb,bwa,fullRectMUA)); %high pass filter &rectify
     
-    case 'default'
+    case 'default' % This has a high pass cutoff higher than a low pass cutoff, which is not how filters work... I'm pretty sure this is wrong --> BMC 11/7/22
         hpc = 750;  %high pass cutoff
         hWn = hpc/nyq;
         [bwb,bwa] = butter(4,hWn,'high');

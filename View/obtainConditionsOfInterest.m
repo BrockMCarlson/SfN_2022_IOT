@@ -44,6 +44,7 @@ for i = 1:size(allData,1)
     % monocular presentations hold you up. 
 
     eyeDominance = {'RE','LE','LE','LE'};
+    warning('you should incoporate diUnitTuning. Right now eye preference is hard-coded. (which works too...)')
     if i == 1
          %% 1. PO Left Eye 16/13
         %Monoc PO LeftEye 
@@ -142,6 +143,9 @@ for i = 1:size(allData,1)
 
     
 
+ warning('you need to baseline correct.')
+ error('re-write this script and use IDX_iScienceSubmission') % C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Event-alignment functions
+ %formattedData should be VERY similar to STIM -- check this
  
  
     %% Get avg results

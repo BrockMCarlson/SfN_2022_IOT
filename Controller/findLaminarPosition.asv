@@ -2,48 +2,41 @@
 
 clear
 close all
+global RIGDIR CODEDIR OUTDIR_FD OUTDIR_PLOT
 [RIGDIR, CODEDIR, OUTDIR_FD, OUTDIR_PLOT] = setup_IOT('BrockHome');
 cd(RIGDIR)
 
 %% Set up master table
-% no .bhv file required
-% Combined from analyEVP.m and analyPSDdepth_redo.m in MLAnalysisOnline31
-    sessionListName = {'211008_B'; '211009_B'; '211012_B'; '211025_B'; '211027_B'; '211102_B'; '211103_B'; '211105_B'; '221208_B'; '221102_J'; '221104_B'};
-    lastEvpNumber.array = {4,5,3,5,2,3,4,6,4,4,5,3};
-    lastEvpNumber.string = cellfun(@num2str,lastEvpNumber.array,'un',0); %turn any cell of arrays and strings into all strings
-    bmcBRFSNumber.array = {1,2,1,1,2,1,1,1,1,1,1,1};
-    bmcBRFSNumber.string = cellfun(@num2str,bmcBRFSNumber.array,'un',0); %turn any cell of arrays and strings into all strings
+fileList = dir('**/*.ns6');
+name = {fileList.name}.';
+idx_bmcBRFSfiles = contains(name,'bmcBRFS');
+numberOfFiles = sum(idx_bmcBRFSfiles);
+fileNameList = name(idx_bmcBRFSfiles);
+folder = {fileList.folder}.';
+folderNameList = folder(idx_bmcBRFSfiles);
+bmcBRFSfileLocation = cell(13,1);
 
-    for sessionNumber = 1:8
-        EVPName{sessionNumber,1}= strcat(...
-            RIGDIR,...
-            sessionListName{sessionNumber},filesep,...
-            sessionListName{sessionNumber},...
-            '_evp00',lastEvpNumber.string{sessionNumber});
-        bmcBRFSName{sessionNumber,1}= strcat(...
-            RIGDIR,...
-            sessionListName{sessionNumber},filesep,...
-            sessionListName{sessionNumber},...
-            '_bmcBRFS00',bmcBRFSNumber.string{sessionNumber});
-    end
-    useChans  = {1:32,1:32,1:32,1:32,1:32,1:32,1:32,1:32}';
-    interpTheseChans = {[],[],[],[],[],[],[],[]}';
-    FileInformationTable = table(EVPName,bmcBRFSName,useChans,interpTheseChans);
-
-
-
-
-
-
-%% Automation setup 
+%% Run all laminar analysis on BRFS files
 global OUTDIR_PLOT
-FolderName = OUTDIR_PLOT;  % Your destination folder
-cd(FolderName)
+cd(OUTDIR_PLOT)
+count = 0;
+for i = 1:length(fileNameList)
+    if i == 2 || i == 6 % get rid of brfs001 when brfs002 exists
+        continue
+    end
+    count = count + 1;
+    bmcBRFSfileLocation{count} = strcat(folderNameList{i},filesep,fileNameList{i});
+end
+
+
+
+global OUTDIR_PLOT
+cd(OUTDIR_PLOT)
 for sessionNumber = [1 2 3 4 6 7 8]
     holderNameEVP = FileInformationTable.EVPName{sessionNumber};
     holderNameBRFS = FileInformationTable.bmcBRFSName{sessionNumber};
-    holderUseChans = FileInformationTable.useChans{sessionNumber};
-    holderInterpChans = FileInformationTable.interpTheseChans{sessionNumber};
+    holderUseChans = 1:32;
+    holderInterpChans = [];
      
     plotCSDandPSDfromNEV(holderNameEVP,holderUseChans,holderInterpChans);
           FigName   = strcat(sessionListName{sessionNumber},'_EVP');

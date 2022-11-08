@@ -129,7 +129,7 @@ for i = 1:length(STIM.trl)
     clear NS dat dat0 dat1 timeperiod hpMUA lpMUA 
     timeperiod = sprintf('t:%u:%u',samplenum);
     NS = openNSx(ns6file,timeperiod,...
-        'read','sample');
+        'read','sample');% We keep the ram of the system low by only loading in the data that we need for each timeperiod. this is why openNSx takes up most of the time of the code. A necessary evil. 
 
     dat0 = double((NS.Data(idx,:)))';  clear NS;
     trim = 1 + (length(dat0)-length(samplevec)); 
