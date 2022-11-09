@@ -1,71 +1,54 @@
 %% visWithGramm_IOT
-% This Github release is at the controller level and is accessing 
-% sub-routines in the Viewer level. This controller interface is intended 
-% to create Gramm plots of the standard IOT comparison. Standard IOT 
-% (aka stdIOTcomp) is simply the monocular presentation of one eye compared 
-% to the same presentation after adaptation in the other eye. 
 
-% This controller interface is intended to take in the the SDF and STIM 
-% variable outputs created in the pre-processing step. It will then format 
-% them for proper gramm inputs. Finally, the controller will interact with
-% the View directory to format and plot the figures using Gramm.
-
-%% Manual Inputs 
 clear
 close all
+global RIGDIR CODEDIR OUTDIR_FD OUTDIR_PLOT
+setup_IOT('BrockHome');
+cd(OUTDIR_FD)
 
-fileOfInterest = {...
-'211008_B_bmcBRFS001_FD.mat';
-'211009_B_bmcBRFS002_FD.mat'; %only brfs 002 available.
-'211027_B_bmcBRFS002_FD.mat'; %use brfs 002!!
-'211103_B_bmcBRFS001_FD.mat'};
+%% Set up master table
+fileList = dir('*FD.mat');
+name = {fileList.name}.';
+idx_bmcBRFSfiles = ~contains(name,'211217_B');
+numberOfFiles = sum(idx_bmcBRFSfiles);
+fileNameList = name(idx_bmcBRFSfiles);
+folder = {fileList.folder}.';
+folderNameList = folder(idx_bmcBRFSfiles);
 
 
 %% Load in Data
-[RIGDIR, CODEDIR, OUTDIR_FD, OUTDIR_PLOT] = setup_IOT('BrockHome');
-cd(OUTDIR_FD)
+
 clear allData
-for rn = 1:4
-    allData{rn,1} = fileOfInterest{rn};
+for rn = 1:length(fileNameList)
+    allData{rn,1} = fileNameList{rn};
     clear trialAlignedMUAPacket
-     load(fileOfInterest{rn});
-     allData{rn,2} = trialAlignedMUAPacket;
+    load(fileNameList{rn});
+    allData{rn,2} = trialAlignedMUAPacket;
+    clear trialAlignedMUAPacket
 end
+
 
 
 
 %% obtainConditionsOfInterest()
 % The goal of this file is to generate an IDX output
 IDX = obtainConditionsOfInterest(allData);
-
-% % % %% Oh man gramm is frustrating. Can I just plot this in matlab?
-% % % quickAndDirtyMatlabPlot(IDX)
-
-
-%% Depth assignemnt
-global OUTDIR_FD
+clear allData
 cd(OUTDIR_FD)
-workbookFile = strcat(OUTDIR_FD,'laminarBoundaryCalculations.xlsx');
-laminarBoundaryCalculations = importDepths(workbookFile);
-clear -variables depths
-for i = 1:size(allData,1)
-    depths.upperBin{i,1} =  laminarBoundaryCalculations.UpperTop(i):1:laminarBoundaryCalculations.UpperBtm(i);
-    depths.middleBin{i,1}  =  laminarBoundaryCalculations.MiddleTop(i):1:laminarBoundaryCalculations.MiddleBtm(i);
-    depths.lowerBin{i,1}  = laminarBoundaryCalculations.LowerTop(i):1:laminarBoundaryCalculations.LowerBtm(i);
-end
+save('IDX_SfN_Dataset.mat','IDX')
+
+
 
 %% formatForGrammInput
-clear forGramm
-forGramm= formatForGrammInput(IDX,depths);
-forJasp= formatForJaspInput(forGramm); %the response values need to be pre-split according to the levles you want to look across
+forGramm= formatForGrammInput(IDX);
+% forJasp= formatForJASPInput(forGramm.RESP); %the response values need to be pre-split according to the levles you want to look across
 
 
 
 %% plotStdIOTwithGramm
-sdftm = IDX.sdftmCrop;
-close all
-plotStdIOTwithGramm(forGramm,sdftm)
- plotStdIOTwithGramm_LE(forGramm,sdftm)
+
+plotStdIOTwithGramm(forGramm,IDX)
+%  plotStdIOTwithGramm_LE(forGramm)
 
 
 

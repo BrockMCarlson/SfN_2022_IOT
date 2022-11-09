@@ -14,7 +14,6 @@ numberOfFiles = sum(idx_bmcBRFSfiles);
 fileNameList = name(idx_bmcBRFSfiles);
 folder = {fileList.folder}.';
 folderNameList = folder(idx_bmcBRFSfiles);
-bmcBRFSfileLocation = cell(13,1);
 
 %% Run all laminar analysis on BRFS files
 cd(OUTDIR_PLOT)
