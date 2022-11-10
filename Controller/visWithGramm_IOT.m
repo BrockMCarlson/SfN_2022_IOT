@@ -6,37 +6,36 @@ global RIGDIR CODEDIR OUTDIR_FD OUTDIR_PLOT
 setup_IOT('BrockHome');
 cd(OUTDIR_FD)
 
-%% Set up master table
-fileList = dir('*FD.mat');
-name = {fileList.name}.';
-idx_bmcBRFSfiles = ~contains(name,'211217_B');
-numberOfFiles = sum(idx_bmcBRFSfiles);
-fileNameList = name(idx_bmcBRFSfiles);
-folder = {fileList.folder}.';
-folderNameList = folder(idx_bmcBRFSfiles);
-
-
 %% Load in Data
+if ~exist('IDX_SfN_Dataset.mat')
+    % Set up master table
+    fileList = dir('*FD.mat');
+    name = {fileList.name}.';
+    idx_bmcBRFSfiles = ~contains(name,'211217_B');
+    numberOfFiles = sum(idx_bmcBRFSfiles);
+    fileNameList = name(idx_bmcBRFSfiles);
+    folder = {fileList.folder}.';
+    folderNameList = folder(idx_bmcBRFSfiles);
 
-clear allData
-for rn = 1:length(fileNameList)
-    allData{rn,1} = fileNameList{rn};
-    clear trialAlignedMUAPacket
-    load(fileNameList{rn});
-    allData{rn,2} = trialAlignedMUAPacket;
-    clear trialAlignedMUAPacket
+    % Load in Data
+    clear allData
+    for rn = 1:length(fileNameList)
+        allData{rn,1} = fileNameList{rn};
+        clear trialAlignedMUAPacket
+        load(fileNameList{rn});
+        allData{rn,2} = trialAlignedMUAPacket;
+        clear trialAlignedMUAPacket
+    end
+
+    % obtainConditionsOfInterest()
+    % The goal of this file is to generate an IDX output
+    IDX = obtainConditionsOfInterest(allData);
+    clear allData
+    cd(OUTDIR_FD)
+    save('IDX_SfN_Dataset.mat','IDX')
+else
+    load('IDX_SfN_Dataset.mat')
 end
-
-
-
-
-%% obtainConditionsOfInterest()
-% The goal of this file is to generate an IDX output
-IDX = obtainConditionsOfInterest(allData);
-clear allData
-cd(OUTDIR_FD)
-save('IDX_SfN_Dataset.mat','IDX')
-
 
 
 %% formatForGrammInput

@@ -41,7 +41,9 @@ for unitOfInterest = 1:length(IDX.allV1)
                 end
                 trlLabel_2{count,:}       = IDX.allV1(unitOfInterest).CondLabel{cond};
                 depthLabel_2{count,:}     = IDX.allV1(unitOfInterest).depthLabel;
-                RESPbinVal(count,:) = IDX.allV1(unitOfInterest).condSelect_pcRESP{cond}(respBinLoop,singleTrial);  
+                RESPbinVal(count,:) = IDX.allV1(unitOfInterest).condSelect_zsRESP{cond}(respBinLoop,singleTrial);  
+                monkeyLabel_2{count,:}     = IDX.allV1(unitOfInterest).monkey;
+
             end
         end
     end
@@ -51,7 +53,7 @@ end
 
 
 forGramm.SDF = table(trlLabel_1,depthLabel_1,monkeyLabel, SDF_singleTrials);
-forGramm.RESP = table(trlLabel_2,depthLabel_2, RESPbinLabel, RESPbinVal);
+forGramm.RESP = table(trlLabel_2,depthLabel_2, monkeyLabel_2, RESPbinLabel, RESPbinVal);
 
 
 end
