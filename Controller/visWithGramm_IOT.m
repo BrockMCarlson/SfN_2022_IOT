@@ -3,7 +3,7 @@
 clear
 close all
 global RIGDIR CODEDIR OUTDIR_FD OUTDIR_PLOT
-setup_IOT('BrockHome');
+setup_IOT('BrockWork');
 cd(OUTDIR_FD)
 
 %% Load in Data
@@ -40,6 +40,10 @@ end
 
 %% formatForGrammInput
 forGramm= formatForGrammInput(IDX);
+number_MUAfromB = size(forGramm.subtract,1);
+number_upperLayers  = sum(strcmp(forGramm.subtract.depthLabel_3,'U'));
+number_middleLayers = sum(strcmp(forGramm.subtract.depthLabel_3,'M'));
+number_deepLayers   = sum(strcmp(forGramm.subtract.depthLabel_3,'L'));
 % forJasp= formatForJASPInput(forGramm.RESP); %the response values need to be pre-split according to the levles you want to look across
 
 
@@ -47,6 +51,7 @@ forGramm= formatForGrammInput(IDX);
 %% plotStdIOTwithGramm
 
 plotStdIOTwithGramm(forGramm,IDX)
+plotLaminarSubtraction(forGramm,IDX)
 %  plotStdIOTwithGramm_LE(forGramm)
 
 
