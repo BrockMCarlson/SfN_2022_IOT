@@ -1,4 +1,4 @@
-![Vanderbilt Logo](logo/logo_vanderbilt.png)
+![Vanderbilt Logo](Dimensional_V_Black_Lockup.png)
 
 # SfN_2022_IOT
 SFN_2022_IOT is the public repository for gnerating the 2022 SfN poster titled:
