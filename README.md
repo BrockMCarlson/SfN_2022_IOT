@@ -33,11 +33,12 @@ cd(datadir)
 load bmcBRFS_dataset.mat
 ```
 
-## Generate Vizulization Figures
-test test
+## Data procesing
+This repository is structrued in a model-viewer-controller framework. The idea is to create deep classes with minimal user interfaces. Functions in the "Model" folder interact with the database. Functions in the "Viewer" folder help generate visualization of the data. The "Controller" folder is where you will find the main scripts to run for this repository, handeling all data processing and visualization on the back-end.
 
+Pre-processed data is available upon request. Once you have received the event-triggered MUA dataset, setupt your requiste home directoreis in setup_SfN_2022_IOT(). Then run visWithGramm_IOT.m to create all plots used on this year's SfN poster. The forJASP.txt output from this script can be used to run a repeated measures ANOVA in JASP. Between subject factors for individual multi-units and for laminar compartment hilight a significant affect of IOT across the laminar profile of V1.
+
+This repository analyzes prelimnary data from 12 sessions in 1 monkey. Check back soon for updates with our 2nd monkey!
 
 ## Generate JASP inputs
 https://github.com/jasp-stats
-
-![JASP Files](JASP/IOT_JASP.jasp)
