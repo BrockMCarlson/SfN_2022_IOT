@@ -40,5 +40,8 @@ Pre-processed data is available upon request. Once you have received the event-t
 
 This repository analyzes prelimnary data from 12 sessions in 1 monkey. Check back soon for updates with our 2nd monkey!
 
-## Generate JASP inputs
+### Gramm toolbox
+https://github.com/piermorel/gramm
+
+### JASP toolbox
 https://github.com/jasp-stats
