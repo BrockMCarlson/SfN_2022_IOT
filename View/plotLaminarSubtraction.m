@@ -1,4 +1,4 @@
-function plotStdIOTwithGramm(forGramm,IDX)
+function plotLaminarSubtraction(forGramm,IDX)
 close all
 sdftm = IDX.allV1(1).TM;
 

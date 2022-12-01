@@ -38,13 +38,14 @@ else
 end
 
 
-%% formatForGrammInput
+%% formatData for toolboxes
 forGramm= formatForGrammInput(IDX);
 number_MUAfromB = size(forGramm.subtract,1);
 number_upperLayers  = sum(strcmp(forGramm.subtract.depthLabel_3,'U'));
 number_middleLayers = sum(strcmp(forGramm.subtract.depthLabel_3,'M'));
 number_deepLayers   = sum(strcmp(forGramm.subtract.depthLabel_3,'L'));
-% forJasp= formatForJASPInput(forGramm.RESP); %the response values need to be pre-split according to the levles you want to look across
+
+forJASP = formatForJASPInput_updatedforPoster_repeatedMeasures_noDelta(IDX); %the response values need to be pre-split according to the levles you want to look across
 
 
 
